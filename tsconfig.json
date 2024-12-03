@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "ES6",
+    "module": "ESNext",
+    "outDir": "./dist",
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "Bundler"
+  },
+  "ts-node": {
+        "esm": true
+    }
+}
