@@ -12,9 +12,13 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/users", userRoutes);
+const MONGO_URI = process.env.MONGO_URI;
+if (!MONGO_URI) {
+  throw new Error("No MONGO_URI variable in .env file");
+}
 
 mongoose
-  .connect(process.env.MONGO_URI as string)
+  .connect(MONGO_URI)
   .then((): void => console.log("Connected to MongoDB"))
   .catch((err: Error): void => console.error("MongoDB connection error:", err));
 
