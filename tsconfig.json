@@ -1,15 +1,14 @@
 {
   "compilerOptions": {
-    "esModuleInterop": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "target": "ES6",
-    "module": "ESNext",
+    "module": "NodeNext",
     "outDir": "./dist",
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "Bundler"
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "nodenext", 
   },
-  "ts-node": {
-        "esm": true
-    }
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }
