@@ -13,11 +13,6 @@ app.use(express.json());
 
 app.use("/api/users", userRoutes);
 
-interface MongoConnectOptions {
-  useNewUrlParser: boolean;
-  useUnifiedTopology: boolean;
-}
-
 mongoose
   .connect(process.env.MONGO_URI as string)
   .then((): void => console.log("Connected to MongoDB"))
