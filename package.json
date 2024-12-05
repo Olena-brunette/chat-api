@@ -5,7 +5,7 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "dev": "node --loader ts-node/esm src/server.ts",
+    "dev": "nodemon --watch src --ext ts --exec \"yarn build && node dist/server.js\"",
     "start": "node dist/server.js",
     "build": "tsc"
   },
@@ -21,8 +21,6 @@
     "@types/mongoose": "^5.11.97",
     "@types/node": "^22.10.1",
     "nodemon": "^3.1.7",
-    "ts-node": "^10.9.2",
-    "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0"
   },
   "dependencies": {
