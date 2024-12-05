@@ -1,7 +1,7 @@
 import { HttpStatusCode } from "axios";
 import { Request, Response, Router } from "express";
 import { ResponceMessage } from "../constants.js";
-import { createMessage } from "../services/message.service.js";
+import { createMessage, getRandomReply } from "../services/message.service.js";
 
 const router = Router();
 
@@ -14,10 +14,27 @@ router.post("/", async (req: Request, res: Response) => {
         .json({ error: ResponceMessage.BadRequest });
       return;
     }
+    // TODO: mplement sokets
+    await createMessage({ id, userId, message })
+      .then(async (data) => {
+        await getRandomReply()
+          .then(async (reply) => {
+            await createMessage({
+              id,
+              message: reply.data[0].content,
+            });
+          })
+          .catch(() => {
+            // console.log("777", err);
+          });
 
-    const newMessage = await createMessage(id, userId, message);
-
-    res.status(HttpStatusCode.Created).json(newMessage);
+        res.status(HttpStatusCode.Created).json(data);
+      })
+      .catch(() => {
+        res
+          .status(HttpStatusCode.NotFound)
+          .json({ error: ResponceMessage.NotFound });
+      });
   } catch (error) {
     res
       .status(HttpStatusCode.InternalServerError)

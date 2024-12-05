@@ -4,8 +4,8 @@ import { updateChatLastMessage } from "./chat.repository.js";
 
 export const registerUserMessage = (
   chatId: string,
-  userId: string,
-  content: string
+  content: string,
+  userId?: string
 ) => {
   const newMessage = new Message({
     chatId,
@@ -18,14 +18,14 @@ export const registerUserMessage = (
 
 export const registerMessage = async (
   chatId: string,
-  userId: string,
-  content: string
+  content: string,
+  userId?: string
 ) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    const newMessage = await registerUserMessage(chatId, userId, content);
+    const newMessage = await registerUserMessage(chatId, content, userId);
 
     await updateChatLastMessage(
       chatId,
