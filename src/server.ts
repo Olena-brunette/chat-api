@@ -16,12 +16,15 @@ app.get("/", (req, res) => {
   res.send("Hello, this is your Express.js server with MongoDB.");
 });
 
-const MONGO_URI = process.env.MONGO_URI;
-if (!MONGO_URI) {
-  throw new Error("No MONGO_URI variable in .env file");
+const MONGODB_URI = process.env.MONGODB_URI;
+if (!MONGODB_URI) {app.get("/", (req, res) => {
+  res.send("Hello, this is your Express.js server with MongoDB.");
+});
+
+  throw new Error("No MONGODB_URI variable in .env file");
 }
 mongoose
-  .connect(MONGO_URI)
+  .connect(MONGODB_URI)
   .then((): void => console.log("Connected to MongoDB"))
   .catch((err: Error): void => console.error("MongoDB connection error:", err));
 
