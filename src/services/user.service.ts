@@ -6,6 +6,7 @@ import {
 import { ResponceMessage } from "../constants.js";
 
 export const registerUser = async (login: string, password: string) => {
+  console.log("registerUser");
   const existingUser = await findUserByLogin(login);
   if (existingUser) {
     throw new Error(ResponceMessage.Conflict);

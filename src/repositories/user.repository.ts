@@ -35,13 +35,13 @@ export const createUser = async (login: string, hashedPassword: string) => {
     await Promise.all(productPromises);
 
     await session.commitTransaction();
-    session.endSession();
 
     return newUser;
   } catch (error) {
     await session.abortTransaction();
-    session.endSession();
 
     throw error;
+  } finally {
+    session.endSession();
   }
 };

@@ -23,8 +23,8 @@ const ChatSchema: Schema = new Schema({
   updatedAt: { type: Number },
   lastMessage: {
     id: { type: mongoose.Schema.Types.ObjectId, ref: "Message" },
-    content: { type: String, required: true },
-    timestamp: { type: Number, required: true },
+    content: { type: String },
+    timestamp: { type: Number},
     _id: false,
   },
 });

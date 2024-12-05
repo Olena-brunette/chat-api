@@ -8,7 +8,6 @@ const router = Router();
 router.post("/", async (req: Request, res: Response): Promise<void> => {
   try {
     const { login, password } = req.body;
-
     if (!login || !password) {
       res
         .status(HttpStatusCode.BadRequest)
@@ -16,9 +15,12 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const newUser = await registerUser(login, password);
-
-    res.status(HttpStatusCode.Created).json(newUser);
+    await registerUser(login, password).then((data) => {
+      res.status(HttpStatusCode.Created).json(data);
+    }).catch(() => {
+      res.status(HttpStatusCode.Conflict).json({ error: ResponceMessage.Conflict });
+    })
+    
   } catch (err: any) {
     if (err.message === "User already exists") {
       res
