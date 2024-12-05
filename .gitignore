@@ -8,6 +8,7 @@ docker-compose.yml
 
 # production
 **/build
+dist/
 
 npm-debug.log*
 debug.log

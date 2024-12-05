@@ -1,48 +1,42 @@
-import { Router, Request, Response } from "express";
-import Chat from "../models/chat.model.js";
-import User from "../models/user.model.js";
 import { HttpStatusCode } from "axios";
+import { Request, Response, Router } from "express";
 import { ResponceMessage } from "../constants.js";
-
-// TODO: remove ts-ignore comments
+import { findUserById } from "../repositories/user.repository.js";
+import {
+  createNewChat,
+  getChatsByUser,
+  updateChat,
+} from "../services/chat.service.js";
 
 const router = Router();
 
-// @ts-ignore
 router.put("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { firstname, lastname, userId } = req.body;
 
     if (!firstname || !lastname || !userId) {
-      return res
+      res
         .status(HttpStatusCode.BadRequest)
         .json({ error: ResponceMessage.BadRequest });
+      return;
     }
 
-    const user = await User.findById(userId);
+    const user = await findUserById(userId);
     if (!user) {
-      return res
+      res
         .status(HttpStatusCode.NotFound)
         .json({ error: ResponceMessage.NotFound });
+      return;
     }
 
-    const existingChat = await Chat.findOne({ _id: id });
-    if (!existingChat) {
-      return res
-        .status(HttpStatusCode.NotFound)
-        .json({ error: ResponceMessage.NotFound });
-    }
     const title = `${firstname} ${lastname}`;
-    const updatedChat = await Chat.findByIdAndUpdate(
-      id,
-      { title, updatedAt: Date.now() },
-      { new: true }
-    );
+    const updatedChat = await updateChat(id, title);
     if (!updatedChat) {
-      return res
+      res
         .status(HttpStatusCode.NotFound)
         .json({ error: ResponceMessage.NotFound });
+      return;
     }
 
     res.json(updatedChat);
@@ -53,37 +47,20 @@ router.put("/:id", async (req: Request, res: Response) => {
   }
 });
 
-// @ts-ignore
 router.post("/", async (req: Request, res: Response) => {
   try {
     const { firstname, lastname, id } = req.body;
-
-    if (!firstname || !lastname || !id) {
-      return res
+    if (!firstname || !lastname) {
+      res
         .status(HttpStatusCode.BadRequest)
         .json({ error: ResponceMessage.BadRequest });
-    }
-
-    const user = await User.findById(id);
-    if (!user) {
-      return res
-        .status(HttpStatusCode.NotFound)
-        .json({ error: ResponceMessage.NotFound });
+      return;
     }
 
     const title = `${firstname} ${lastname}`;
+    const newChat = await createNewChat(title, id);
 
-    const chat = {
-      title: `${firstname} ${lastname}`,
-      owner: id,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-      messages: [],
-      replies: [],
-    };
-
-    await Chat.create(chat);
-    res.status(HttpStatusCode.Created).json({ title });
+    res.status(HttpStatusCode.Created).json(newChat);
   } catch (error) {
     res
       .status(HttpStatusCode.InternalServerError)
@@ -91,16 +68,23 @@ router.post("/", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/", async (req: Request, res: Response) => {
+router.get("/:id/", async (req: Request, res: Response) => {
   try {
-    const { search } = req.query;
-    let chats;
-    if (search) {
-      chats = await Chat.find({ title: { $regex: search, $options: "i" } });
-    } else {
-      chats = await Chat.find();
+    const { id } = req.params;
+    const { search, lastId } = req.query;
+    const chat = await getChatsByUser(
+      id,
+      lastId ? lastId.toString() : "",
+      search ? search.toString() : ""
+    );
+    if (!chat) {
+      res
+        .status(HttpStatusCode.NotFound)
+        .json({ error: ResponceMessage.NotFound });
+      return;
     }
-    res.json(chats);
+
+    res.json(chat);
   } catch (error) {
     res
       .status(HttpStatusCode.InternalServerError)
