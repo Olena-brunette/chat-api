@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import userRoutes from "./routes/user.route.js";
+import chatRoutes from "./routes/chat.route.js";
+import messageRoutes from "./routes/message.route.js";
 
 dotenv.config();
 
@@ -12,6 +14,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/users", userRoutes);
+app.use("/api/chats", chatRoutes);
+app.use("/api/messages", messageRoutes);
 app.get("/", (req, res) => {
   res.send("Hello, this is your Express.js server with MongoDB.");
 });
