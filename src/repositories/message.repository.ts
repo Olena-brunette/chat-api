@@ -42,3 +42,7 @@ export const registerMessage = async (
     throw error;
   }
 };
+
+export const getMessages = (chatId: string) => {
+  return Message.find({ chatId }).sort({ timestamp: 1 });
+};
