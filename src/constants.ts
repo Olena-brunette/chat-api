@@ -7,6 +7,8 @@ export enum ResponceMessage {
   NotCreated = "Not Created",
   NotUpdated = "Not Updated",
   Deleted = "Deleted",
+  InvalidCreds = "Invalid Credentials",
+  Expired= "Token Expired",
 }
 
 

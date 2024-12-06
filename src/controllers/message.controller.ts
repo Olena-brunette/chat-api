@@ -6,8 +6,11 @@ import {
   getAllMessages,
   getRandomReply,
 } from "../services/message.service.js";
+import { authenticate } from "../middlwares/auth.middlware.js";
 
 const router = Router();
+router.use(authenticate);
+
 
 router.post("/", async (req: Request, res: Response) => {
   try {
