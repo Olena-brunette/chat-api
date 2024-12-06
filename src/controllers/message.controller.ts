@@ -35,7 +35,7 @@ router.post("/", async (req: Request, res: Response) => {
                 .json({ error: ResponceMessage.NotFound });
               return;
             }
-            res.status(HttpStatusCode.Ok).json(message);
+            res.status(HttpStatusCode.Ok).json(data);
           })
           .catch(() => {
             res
