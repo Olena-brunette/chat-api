@@ -8,8 +8,10 @@ import {
   getChatsByUser,
   updateChat,
 } from "../services/chat.service.js";
+import { authenticate } from "../middlwares/auth.middlware.js";
 
 const router = Router();
+router.use(authenticate);
 
 router.put("/:id", async (req: Request, res: Response) => {
   try {

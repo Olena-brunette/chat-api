@@ -1,10 +1,11 @@
-import express from "express";
+import express, { NextFunction } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import registerUserEndpoint from "./controllers/user.controller.js";
 import registerChatEndpoint from "./controllers/chat.controller.js";
 import registerMessageEndpoint from "./controllers/message.controller.js";
+import authController from "./controllers/auth.controller.js";
 
 dotenv.config();
 
@@ -12,8 +13,11 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
+
 
 app.use("/api/users", registerUserEndpoint);
+app.use("/api/auth", authController);
 app.use("/api/chats", registerChatEndpoint);
 app.use("/api/messages", registerMessageEndpoint);
 
