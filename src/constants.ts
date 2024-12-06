@@ -6,6 +6,8 @@ export enum ResponceMessage {
   InternalServerError = "Internal Server Error",
   NotCreated = "Not Created",
   NotUpdated = "Not Updated",
+  Deleted = "Deleted",
 }
+
 
 export const DEFAULT_CHATS = ["Alice Freeman", "Josefina", "Velazquez"];
