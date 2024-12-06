@@ -86,7 +86,7 @@ router.post("/login", async (req: Request, res: Response) => {
   const accessToken = generateAccessToken(user.id);
   const refreshToken = generateRefreshToken(user.id);
 
-  res.json({
+  res.status(HttpStatusCode.Ok).json({
     accessToken,
     refreshToken,
     user: { login: user.login, id: user.id },
@@ -117,7 +117,7 @@ router.post("/refresh", async(req: Request, res: Response) => {
     const newAccessToken = generateAccessToken(user._id);
     // @ts-ignore
 
-    res.json({ accessToken: newAccessToken });
+    res.status(HttpStatusCode.Ok).json({ accessToken: newAccessToken });
   } catch (error: any) {
     res
       .status(HttpStatusCode.Unauthorized)
