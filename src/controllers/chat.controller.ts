@@ -4,6 +4,7 @@ import { ResponceMessage } from "../constants.js";
 import { findUserById } from "../repositories/user.repository.js";
 import {
   createNewChat,
+  deleteChat,
   getChatsByUser,
   updateChat,
 } from "../services/chat.service.js";
@@ -91,5 +92,24 @@ router.get("/:id/", async (req: Request, res: Response) => {
       .json({ error: ResponceMessage.InternalServerError });
   }
 });
+
+router.delete("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const chat = await deleteChat(id);
+    if (!chat?.message) {
+      res
+        .status(HttpStatusCode.NotFound)
+        .json({ error: ResponceMessage.NotFound });
+      return;
+    }
+
+    res.json(chat);
+  } catch (error) {
+    res
+      .status(HttpStatusCode.InternalServerError)
+      .json({ error: ResponceMessage.InternalServerError });
+  }
+})
 
 export default router;

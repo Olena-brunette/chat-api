@@ -65,3 +65,8 @@ export const getChatsByUserId = async (
     options
   );
 };
+
+
+export const removeChat = async (id: string) => {
+  return await Chat.findByIdAndDelete(id);
+}

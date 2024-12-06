@@ -3,6 +3,7 @@ import {
   createChat,
   findChatById,
   getChatsByUserId,
+  removeChat,
   updateChatTitle,
 } from "../repositories/chat.repository.js";
 
@@ -30,3 +31,17 @@ export const getChatsByUser = async (
 ) => {
   return await getChatsByUserId(userId, lastId, search);
 };
+
+
+export const deleteChat = async (id: string) => {
+  const chatToDelete = await findChatById(id);
+  if (!chatToDelete) {
+    throw new Error(ResponceMessage.NotFound);
+  }
+
+  const deletedChat = await removeChat(id);
+  if (!deletedChat) {
+    throw new Error();
+  }
+  return {message: ResponceMessage.Deleted};
+}
