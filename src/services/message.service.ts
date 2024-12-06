@@ -1,7 +1,7 @@
 import axios from "axios";
 import https from "https";
 import { ResponceMessage } from "../constants.js";
-import { registerMessage } from "../repositories/message.repository.js";
+import { getMessages, registerMessage } from "../repositories/message.repository.js";
 
 export const createMessage = async ({
   id,
@@ -12,7 +12,7 @@ export const createMessage = async ({
   userId?: string;
   message: string;
 }) => {
-  console.log("createMessage", id, userId, message);
+
   const newMessage = await registerMessage(id, message, userId);
   if (!newMessage) {
     throw new Error(ResponceMessage.NotCreated);
@@ -30,3 +30,12 @@ export const getRandomReply = async () => {
 
   return await axios.get(url, { timeout: 3000, httpsAgent: agent });
 };
+
+
+export const getAllMessages = async (chatId: string) => {  
+  const messages = await getMessages(chatId);
+  if (!messages) {
+    throw new Error(ResponceMessage.NotFound);
+  }
+  return messages;
+}
