@@ -18,21 +18,30 @@ router.post("/", async (req: Request, res: Response) => {
         .json({ error: ResponceMessage.BadRequest });
       return;
     }
-    // TODO: mplement sokets
     await createMessage({ id, userId, message })
       .then(async (data) => {
         await getRandomReply()
           .then(async (reply) => {
-            await createMessage({
+           const message = await createMessage({
               id,
               message: reply.data[0].content,
             });
+            if (!message) {
+              res
+                .status(HttpStatusCode.NotFound)
+                .json({ error: ResponceMessage.NotFound });
+              return;
+            }
+            res.status(HttpStatusCode.Ok).json(message);
           })
           .catch(() => {
-            // console.log("777", err);
+            res
+              .status(HttpStatusCode.NotFound)
+              .json({ error: ResponceMessage.NotFound });
+              return;
           });
 
-        res.status(HttpStatusCode.Created).json(data);
+        
       })
       .catch(() => {
         res

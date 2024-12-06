@@ -3,6 +3,8 @@ import https from "https";
 import { ResponceMessage } from "../constants.js";
 import { getMessages, registerMessage } from "../repositories/message.repository.js";
 
+const RESPONSE_TIMEOUT = 3000;
+
 export const createMessage = async ({
   id,
   userId,
@@ -28,7 +30,7 @@ export const getRandomReply = async () => {
     rejectUnauthorized: false,
   });
 
-  return await axios.get(url, { timeout: 3000, httpsAgent: agent });
+  return await axios.get(url, { timeout: RESPONSE_TIMEOUT, httpsAgent: agent });
 };
 
 
