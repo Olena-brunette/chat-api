@@ -5,6 +5,7 @@ import {
   findUserById,
 } from "../repositories/user.repository.js";
 import { ResponceMessage } from "../constants.js";
+import { verifyRefreshToken } from "./token.services.js";
 
 export const registerUser = async (login: string, password: string) => {
 
@@ -37,3 +38,4 @@ export const validateUserByName = async (login: string) => {
       
     return user;
     }
+
